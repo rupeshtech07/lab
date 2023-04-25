@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="option1"
+        android:id="@+id/b1"/>
+    <item android:title="option2"
+        android:id="@+id/b2"/>
+    <item android:title="option3"
+        android:id="@+id/b3"
+       />
+    <item
+        android:title="home"
+        android:id="@+id/home"
+        app:showAsAction="always"
+        android:icon="@drawable/home"
+        />
+</menu>
