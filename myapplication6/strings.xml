@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">My Application6</string> 
+    <string-array name="Months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+
+</resources>
