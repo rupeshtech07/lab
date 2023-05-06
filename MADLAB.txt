@@ -1,0 +1,800 @@
+MAIN ACTIVITY
+package com.example.ex;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupMenu;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+
+    private MenuItem item;
+
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.pop);
+        popup.show();
+    }
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.a:
+                Toast.makeText(this, "Item 1 clicked", Toast.LENGTH_SHORT).show();
+                openactivity1();
+                return true;
+            case R.id.b:
+                Toast.makeText(this, "Item 2 clicked", Toast.LENGTH_SHORT).show();
+                openactivity5();
+                return true;
+            case R.id.c:
+                Toast.makeText(this, "Item 3 clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.d:
+                Toast.makeText(this, "Item 4 clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item:
+                Toast.makeText(this, "Item 1 selected", Toast.LENGTH_SHORT).show();
+                openactivity3();
+                return true;
+            case R.id.item2:
+                Toast.makeText(this, "Item 2 selected", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.item3:
+                Toast.makeText(this, "Item 3 selected", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.item4:
+                Toast.makeText(this, "Sub Item 1 selected", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    EditText ids, name, sex;
+
+    Button add, update, delete, view,q;
+
+
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        q = findViewById(R.id.q);
+        q.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                builder.setTitle("Exit?");
+
+                builder.setMessage("do u want to quit?");
+
+                builder.setCancelable(false);
+
+                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+
+                    @Override
+
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        finish();
+
+                    }
+
+                });
+
+                builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+
+                    @Override
+
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+
+                });
+
+                builder.create().show();
+
+            }
+
+        });
+
+
+        SQLiteDatabase mydatabase = openOrCreateDatabase("example", MODE_PRIVATE, null);
+
+
+        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS people(ids VARCHAR primary key, name VARCHAR, sex VARCHAR);");
+        name = findViewById(R.id.name);
+
+        ids = findViewById(R.id.ids);
+
+        sex = findViewById(R.id.sex);
+
+        add = findViewById(R.id.add);
+
+        update = findViewById(R.id.update);
+
+        delete = findViewById(R.id.delete);
+
+        view = findViewById(R.id.view);
+
+        add.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View view) {
+
+                String name1 = name.getText().toString();
+
+                String roll1 = ids.getText().toString();
+
+                String score1 = sex.getText().toString();
+
+                mydatabase.execSQL("INSERT INTO people VALUES('" + roll1 + "','" + name1 + "', '" + score1 + "');");
+
+            }
+
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View view) {
+
+                String roll1 = ids.getText().toString();
+
+                mydatabase.execSQL("DELETE FROM people WHERE ids = '" + roll1 + "'");
+
+            }
+
+        });
+
+        update.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View view) {
+
+                String name1 = name.getText().toString();
+
+                String roll1 = ids.getText().toString();
+
+                String score1 = ids.getText().toString();
+
+                mydatabase.execSQL("Update people set name = '" + name1 + "', sex = '" + score1 + "' where ids = '" + roll1 + "'");
+
+            }
+
+        });
+
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View view) {
+
+                String roll1 = ids.getText().toString();
+
+                Cursor resultSet = mydatabase.rawQuery("Select * from people where ids = '" + roll1 + "' ", null);
+
+                resultSet.moveToFirst();
+
+                name.setText(resultSet.getString(1));
+
+                sex.setText(resultSet.getString(2));
+
+                Log.d("Hello", roll1);
+
+            }
+
+        });
+
+
+    }
+    public void openactivity1(){
+
+        Intent i = new Intent(this,two.class);
+
+        //i.putExtra("x",s);
+
+        startActivity(i);
+
+    }
+    public void openactivity3(){
+
+        Intent a = new Intent(this,four.class);
+
+        //i.putExtra("x",s);
+
+        startActivity(a);
+
+    }
+    public void openactivity5(){
+
+        Intent j = new Intent(this,radiogrp.class);
+
+        //i.putExtra("x",s);
+
+        startActivity(j);
+
+    }
+
+
+}
+
+MAIN ACTIVITY XMLLLL=========================================================================================================
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.964" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="413dp"
+        android:layout_height="440dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="-3dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <EditText
+            android:id="@+id/ids"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="ids"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="sex"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ADD" />
+
+        <Button
+            android:id="@+id/update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="UPDATE" />
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DELETE" />
+
+        <Button
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="VIEW" />
+
+        <Button
+
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+
+            android:onClick="showPopup"
+
+            android:text="show popup"
+
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/q"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="191dp"
+        android:layout_marginEnd="307dp"
+        android:layout_marginBottom="51dp"
+        android:text="quit?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+ 
+TWO ACTIVITY==============================================================================================================================
+
+package com.example.ex;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
+public class two extends AppCompatActivity {
+    TextView tm, dt;
+    Button time, date,back;
+
+
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_two);
+        time = findViewById(R.id.time);
+        date = findViewById(R.id.date);
+        tm = findViewById(R.id.tm);
+        dt = findViewById(R.id.dt);
+        back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTimePicker();
+            }
+        });
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDatePicker();
+            }
+        });
+
+    }
+
+    private void openDatePicker() {
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, androidx.appcompat.R.style.Base_Theme_AppCompat_Dialog, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+//Showing the picked value in the textView
+
+                dt.setText(String.valueOf(year) + "." + String.valueOf(month) + "." + String.valueOf(day));
+
+            }
+
+        }, 2023, 01, 20);
+
+        datePickerDialog.show();
+
+    }
+
+    private void openTimePicker() {
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, androidx.appcompat.R.style.Base_Theme_AppCompat_Dialog, new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+
+//Showing the picked value in the textView
+
+                tm.setText(String.valueOf(hour) + ":" + String.valueOf(minute));
+
+            }
+
+        }, 15, 30, false);
+
+        timePickerDialog.show();
+
+    }
+
+}
+
+XML
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".two">
+
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <Button
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="date" />
+
+        <TextView
+            android:id="@+id/dt"
+            android:layout_width="match_parent"
+            android:layout_height="63dp" />
+
+        <Button
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="time" />
+
+        <TextView
+            android:id="@+id/tm"
+            android:layout_width="match_parent"
+            android:layout_height="64dp" />
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="back" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+FOUR ACTIVITY======================================================================================================================
+
+package com.example.ex;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Toast;
+
+public class four extends AppCompatActivity {
+    CheckBox pizza,coffe,burger;
+    Button buttonOrder;
+
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_four);
+
+        pizza=(CheckBox)findViewById(R.id.checkBox);
+        coffe=(CheckBox)findViewById(R.id.checkBox2);
+        burger=(CheckBox)findViewById(R.id.checkBox3);
+        buttonOrder=(Button)findViewById(R.id.button);
+        buttonOrder.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                int totalamount=0;
+                StringBuilder result=new StringBuilder();
+                result.append("Selected Items:");
+                if(pizza.isChecked()){
+                    result.append("\nPizza 100Rs");
+                    totalamount+=100;
+                }
+                if(coffe.isChecked()){
+                    result.append("\nCoffe 50Rs");
+                    totalamount+=50;
+                }
+                if(burger.isChecked()){
+                    result.append("\nBurger 120Rs");
+                    totalamount+=120;
+                }
+                result.append("\nTotal: "+totalamount+"Rs");
+                //Displaying the message on the toast
+                Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
+            }
+
+        });
+
+
+    }
+}
+
+XML
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".menuthree">
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="144dp"
+        android:layout_marginTop="68dp"
+        android:text="Pizza"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="144dp"
+        android:layout_marginTop="28dp"
+        android:text="Coffee"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+
+    <CheckBox
+        android:id="@+id/checkBox3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="144dp"
+        android:layout_marginTop="28dp"
+        android:text="Burger"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="144dp"
+        android:layout_marginTop="184dp"
+        android:text="Order"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+RADIO GRP ACTIVITY
+
+package com.example.ex;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
+public class radiogrp extends Activity {
+
+    private RadioGroup radioSexGroup;
+    private RadioButton radioSexButton;
+    private Button btnDisplay;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_radiogrp);
+
+        addListenerOnButton();
+
+    }
+
+    public void addListenerOnButton() {
+
+        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
+        btnDisplay = (Button) findViewById(R.id.btnDisplay);
+
+        btnDisplay.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // get selected radio button from radioGroup
+                int selectedId = radioSexGroup.getCheckedRadioButtonId();
+
+                // find the radiobutton by returned id
+                radioSexButton = (RadioButton) findViewById(selectedId);
+
+                Toast.makeText(radiogrp.this,
+                        radioSexButton.getText(), Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
+
+    }
+}
+
+XML
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RadioGroup
+        android:id="@+id/radioSex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/radioMale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_male"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/radioFemale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_female" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_display" />
+
+</LinearLayout>
+
+STRINGS
+
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, MyAndroidAppActivity!</string>
+    <string name="app_name">MyAndroidApp</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
+    <string name="btn_display">Display</string>
+</resources>
+
+======MENU XML====
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+
+        android:id="@+id/item"
+
+        android:title="Item "
+
+        app:showAsAction="never" />
+
+    <item
+
+        android:id="@+id/item2"
+
+        android:title="Item 2"
+
+        app:showAsAction="never" />
+
+    <item
+
+        android:id="@+id/item3"
+
+        android:title="Item 3"
+
+        app:showAsAction="never"/>
+    <item
+
+        android:id="@+id/item4"
+
+        android:title="Item 4"
+
+        app:showAsAction="never">
+
+
+
+
+    </item>
+
+</menu>
+
+POPUP MENU XML==================================
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+
+        android:id="@+id/a"
+
+        android:title="Item 1" />
+
+    <item
+
+        android:id="@+id/b"
+
+        android:title="Item 2" />
+
+    <item
+
+        android:id="@+id/c"
+
+        android:title="Item 3" />
+
+    <item
+
+        android:id="@+id/d"
+
+        android:title="Item 4" />
+
+</menu>
