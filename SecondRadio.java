@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SecondActivity extends AppCompatActivity {
 
     private TextView selectedOptionText;
-
+   TextView tv;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,12 +20,14 @@ public class SecondActivity extends AppCompatActivity {
 
         String selectedOption = getIntent().getStringExtra("selectedOption");
         String name = getIntent().getStringExtra("name");
-
+        String items=getIntent().getStringExtra("x");
         TextView optionTextView = findViewById(R.id.selected_option_text_view);
         optionTextView.setText("Selected Option: " + selectedOption);
 
         TextView nameTextView = findViewById(R.id.name_text_view);
+        tv=findViewById(R.id.textView);
         nameTextView.setText("Name: " + name);
+        tv.setText(items);
 
         return;
     }
